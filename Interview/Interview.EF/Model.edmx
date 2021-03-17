@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Interview.DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="ManufacturerId" />
+          </Key>
+          <Property Name="ManufacturerId" Type="int" Nullable="false" />
+          <Property Name="ManufacturerName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Range">
+          <Key>
+            <PropertyRef Name="RangeId" />
+          </Key>
+          <Property Name="RangeId" Type="int" Nullable="false" />
+          <Property Name="RangeName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ManufacturerId" Type="int" Nullable="false" />
+          <Property Name="ImageFile" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Interview.Database.dbo.Range_Manufacturer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Range_Manufacturer">
+          <Key>
+            <PropertyRef Name="RangeId" />
+            <PropertyRef Name="RangeName" />
+            <PropertyRef Name="ManufacturerId" />
+            <PropertyRef Name="ManufacturerName" />
+          </Key>
+          <Property Name="RangeId" Type="int" Nullable="false" />
+          <Property Name="RangeName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ManufacturerId" Type="int" Nullable="false" />
+          <Property Name="ManufacturerName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="Range_ManufacturerId_FK">
+          <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+          <End Role="Range" Type="Self.Range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="ManufacturerId" />
+            </Principal>
+            <Dependent Role="Range">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetAllRangesByManufacturerId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ManufacturerId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="InterviewDatabaseModelStoreContainer">
+          <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Range" EntityType="Self.Range" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Range_Manufacturer" EntityType="Self.Range_Manufacturer" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Range_Manufacturer].[RangeId] AS [RangeId], 
+    [Range_Manufacturer].[RangeName] AS [RangeName], 
+    [Range_Manufacturer].[ManufacturerId] AS [ManufacturerId], 
+    [Range_Manufacturer].[ManufacturerName] AS [ManufacturerName]
+    FROM [dbo].[Range_Manufacturer] AS [Range_Manufacturer]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Range_ManufacturerId_FK" Association="Self.Range_ManufacturerId_FK">
+            <End Role="Manufacturer" EntitySet="Manufacturer" />
+            <End Role="Range" EntitySet="Range" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Interview.DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="ManufacturerId" />
+          </Key>
+          <Property Name="ManufacturerId" Type="Int32" Nullable="false" />
+          <Property Name="ManufacturerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Range" Relationship="Self.Range_ManufacturerId_FK" FromRole="Manufacturer" ToRole="Range" />
+        </EntityType>
+        <EntityType Name="Range">
+          <Key>
+            <PropertyRef Name="RangeId" />
+          </Key>
+          <Property Name="RangeId" Type="Int32" Nullable="false" />
+          <Property Name="RangeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ManufacturerId" Type="Int32" Nullable="false" />
+          <Property Name="ImageFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Manufacturer" Relationship="Self.Range_ManufacturerId_FK" FromRole="Range" ToRole="Manufacturer" />
+        </EntityType>
+        <EntityType Name="Range_Manufacturer">
+          <Key>
+            <PropertyRef Name="RangeId" />
+            <PropertyRef Name="RangeName" />
+            <PropertyRef Name="ManufacturerId" />
+            <PropertyRef Name="ManufacturerName" />
+          </Key>
+          <Property Name="RangeId" Type="Int32" Nullable="false" />
+          <Property Name="RangeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ManufacturerId" Type="Int32" Nullable="false" />
+          <Property Name="ManufacturerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="Range_ManufacturerId_FK">
+          <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+          <End Role="Range" Type="Self.Range" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="ManufacturerId" />
+            </Principal>
+            <Dependent Role="Range">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" />
+          <EntitySet Name="Range" EntityType="Self.Range" />
+          <EntitySet Name="Range_Manufacturer" EntityType="Self.Range_Manufacturer" />
+          <AssociationSet Name="Range_ManufacturerId_FK" Association="Self.Range_ManufacturerId_FK">
+            <End Role="Manufacturer" EntitySet="Manufacturer" />
+            <End Role="Range" EntitySet="Range" />
+          </AssociationSet>
+          <FunctionImport Name="GetAllRangesByManufacturerId" ReturnType="Collection(Interview.DatabaseModel.GetAllRangesByManufacturerId_Result)">
+            <Parameter Name="ManufacturerId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetAllRangesByManufacturerId_Result">
+          <Property Type="Int32" Name="RangeId" Nullable="false" />
+          <Property Type="String" Name="RangeName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ManufacturerId" Nullable="false" />
+          <Property Type="String" Name="ManufacturerName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InterviewDatabaseModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Manufacturer">
+            <EntityTypeMapping TypeName="Interview.DatabaseModel.Manufacturer">
+              <MappingFragment StoreEntitySet="Manufacturer">
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="ManufacturerName" ColumnName="ManufacturerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Range">
+            <EntityTypeMapping TypeName="Interview.DatabaseModel.Range">
+              <MappingFragment StoreEntitySet="Range">
+                <ScalarProperty Name="RangeId" ColumnName="RangeId" />
+                <ScalarProperty Name="RangeName" ColumnName="RangeName" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="ImageFile" ColumnName="ImageFile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Range_Manufacturer">
+            <EntityTypeMapping TypeName="Interview.DatabaseModel.Range_Manufacturer">
+              <MappingFragment StoreEntitySet="Range_Manufacturer">
+                <ScalarProperty Name="RangeId" ColumnName="RangeId" />
+                <ScalarProperty Name="RangeName" ColumnName="RangeName" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="ManufacturerName" ColumnName="ManufacturerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetAllRangesByManufacturerId" FunctionName="Interview.DatabaseModel.Store.GetAllRangesByManufacturerId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Interview.DatabaseModel.GetAllRangesByManufacturerId_Result">
+                <ScalarProperty Name="RangeId" ColumnName="RangeId" />
+                <ScalarProperty Name="RangeName" ColumnName="RangeName" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="ManufacturerName" ColumnName="ManufacturerName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

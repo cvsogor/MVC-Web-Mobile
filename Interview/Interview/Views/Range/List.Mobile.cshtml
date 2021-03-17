@@ -1,0 +1,42 @@
+﻿@model List<Interview.EF.Manufacturer>
+
+    <script type="text/javascript">
+    function show_hide(elem)
+    {
+        var obj = document.getElementById(elem);
+        if (obj != null) 
+        {
+            if (obj.style.display === "none")
+            {
+                obj.style.display = "block";
+            }
+            else
+            {
+                obj.style.display = "none";
+            }
+        }
+    }
+    </script>
+
+    @{
+        ViewBag.Title = "Manufacturers";
+    }
+    @foreach (Interview.EF.Manufacturer m in Model)
+    {
+        if (Request.Browser.ScreenPixelsWidth >= 480)
+        {
+            <div style="text-align: center; padding-top: 10px; " ><img src="~/Content/Images/Manufacturers/@{@m.ManufacturerName}.png" alt="@m.ManufacturerName" /></div>
+        }
+        <div style="text-align: center; "><h1>Cars in the @m.ManufacturerName range</h1></div>
+
+        foreach (Interview.EF.Range r in m.Range)
+        {
+            <div onclick="show_hide(@r.RangeId)" style="text-align: center; vertical-align: central; margin: auto; display: block; padding-top: 10px; margin-top: 2px; height: 42px; width: 360px; background: #222222; color: white; font-size: 18px; ">@m.ManufacturerName @r.RangeName</div>
+            if (@r.ImageFile != null)
+            {
+                <div id="@r.RangeId" style="text-align: center; vertical-align: central; margin: auto; display: none; width: 360px; height: 200px; "><img src="~/Content/Images/Vehicles/@r.ImageFile" alt="@r.RangeName" /></div>
+            }
+        }
+    }
+
+

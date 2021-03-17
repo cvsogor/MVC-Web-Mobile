@@ -1,0 +1,36 @@
+﻿@model List<Interview.EF.Manufacturer>
+
+    @{
+        ViewBag.Title = "Manufacturers";
+    }
+    
+    @foreach (Interview.EF.Manufacturer m in Model)
+    {
+        <div style="text-align: center; padding-top: 30px; padding-bottom: 60px;" ><img src="~/Content/Images/Manufacturers/@{@m.ManufacturerName}.png" alt="@m.ManufacturerName" /></div>
+        <div style="text-align: center; padding-bottom: 60px;"><h1>Cars in the @m.ManufacturerName range</h1></div>
+        <div style="display: table">
+            <div style="display: table-row-group">
+                @{
+                    int i = 0; 
+                    foreach (Interview.EF.Range r in m.Range)
+                    {
+                        <div style="display: table-cell; padding-bottom: 35px; padding-right: 30px;">
+                            <div style="text-align: center; display: table-cell; vertical-align: middle; height: 42px; width: 360px; background: #222222; color: white; font-size: 18px;">@m.ManufacturerName @r.RangeName</div>
+                            @if (@r.ImageFile != null)
+                            {
+                            <div style="text-align: center; float: left; display: table-cell; vertical-align: middle; width: 360px; height: 203px; "><img src="~/Content/Images/Vehicles/@r.ImageFile" alt="@r.RangeName" /></div>
+                            }
+                        </div>
+
+                        i++;
+                        if (i % 3 == 0)
+                        {
+                            @Html.Raw("</div><div style='display: table-row-group'>")
+                        }
+                    }
+                }
+            </div>
+        </div>
+    }
+
+
